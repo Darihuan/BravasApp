@@ -1,70 +1,64 @@
 package web.practicas.demo.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import web.practicas.demo.model.entidades.Atributo;
+import web.practicas.demo.repository.IAtributoRepository;
+
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+@Service
+public class AtributoService {
+    @Autowired
+    protected IAtributoRepository repository;
 
-import web.practicas.demo.model.Atributo;
-import web.practicas.demo.repository.AtributoRepository;
+    public AtributoService(IAtributoRepository repository) {
+        this.repository = repository;
+    }
 
-public class AtributoService  {
-	@Autowired
-	AtributoRepository repository;
-	
-	public List<Atributo> listall() throws Exception {
+    public List<Atributo> listall() throws Exception{
+        try{
+            return repository.findAll();
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }
+    }
 
-		try {
-			return repository.findAll();
-		} catch (Exception e) {
-			throw new Exception(e.getMessage());
-		}
+    public Optional<Atributo> listbyid(String id) throws Exception{
+        try{
+            return repository.findById(id);
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }
+    }
 
-	}
+    public Atributo add(Atributo entidad) throws Exception{
+        try{
+            return repository.save(entidad);
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }
+    }
 
-	
-	public Optional<Atributo> listbyid(String id) throws Exception {
+    public Atributo update(String id, Atributo entidad) throws Exception{
+        try{
+            if(entidad.getNombreAtributo().equals(id)){
+                return repository.save(entidad);
+            }else{
+                return repository.findById(id).get();
+            }
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }
+    }
 
-		try {
-			return repository.findById(id);
-		} catch (Exception e) {
-			throw new Exception(e.getMessage());
-		}
-
-	}
-
-	
-	public void add(Atributo entidad) throws Exception {
-
-		try {
-			repository.save(entidad);
-		} catch (Exception e) {
-			throw new Exception(e.getMessage());
-		}
-
-	}
-
-	
-	public void update(String id, Atributo entidad) throws Exception {
-
-		try {
-			if(id.equals(entidad.getNombreAtributo()))
-			repository.save(entidad);
-		} catch (Exception e) {
-			throw new Exception(e.getMessage());
-		}
-
-	}
-
-	
-	public void delete(String id) throws Exception {
-
-		try {
-			repository.deleteById(id);
-		} catch (Exception e) {
-			throw new Exception(e.getMessage());
-		}
-
-	}
-
+    public Atributo delete(String id) throws Exception{
+        try{
+            repository.deleteById(id);
+            return repository.findById(id).get();
+        }catch(Exception e){
+            throw new Exception(e.getMessage());
+        }
+    }
 }

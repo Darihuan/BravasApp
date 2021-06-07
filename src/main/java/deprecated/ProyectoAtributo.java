@@ -3,11 +3,10 @@ package deprecated;
 import java.util.Date;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
-import web.practicas.demo.model.Atributo;
-import web.practicas.demo.model.Base;
+import web.practicas.demo.model.entidades.Atributo;
+import web.practicas.demo.model.base.Base;
 
 
  

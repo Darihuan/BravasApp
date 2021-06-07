@@ -8,6 +8,8 @@ public class BravasAppApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BravasAppApplication.class, args);
+
+
 	}
 
 }

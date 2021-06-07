@@ -1,77 +1,61 @@
 package web.practicas.demo.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import web.practicas.demo.model.entidades.Usuarios;
+import web.practicas.demo.model.dto.Logueo;
+import web.practicas.demo.model.dto.UsuarioDto;
+import web.practicas.demo.repository.base.BaseRepository;
+import web.practicas.demo.repository.IUsuarioRepository;
+import web.practicas.demo.service.base.BaseServiceImplementation;
 
-import web.practicas.demo.model.Logueo;
-import web.practicas.demo.model.UsuarioDto;
-import web.practicas.demo.model.Usuarios;
-import web.practicas.demo.repository.UsuarioRepository;
+import java.util.List;
 
 @Service
+
 public class UsuarioService extends BaseServiceImplementation<Usuarios, Long> {
-	@Autowired
-	UsuarioRepository repositorio;
+    @Autowired
+    IUsuarioRepository repositorio;
 
-	public UsuarioService(UsuarioRepository repositorio) {
-		this.repositorio = repositorio;
-	}
+    public UsuarioService(BaseRepository<Usuarios, Long> repository, IUsuarioRepository repositorio) {
+        super(repository);
+        this.repositorio = repositorio;
+    }
 
-	
-	public void update(Long id, Usuarios usuario) throws Exception {
-		try {
-			if(id==usuario.getId())
-				repository.save(usuario);
 
-			
+    public List<Usuarios> SearchUsuariobyemail(String email) throws Exception {
+        try {
 
-		} catch (Exception e) {
+            return repositorio.findByemail(email);
 
-			throw new Exception(e.getMessage());
-		}
+        } catch (Exception e) {
 
-	}
+            throw new Exception(e.getMessage());
+        }
+    }
 
-	public List<Usuarios> SearchUsuariobyemail(String email) throws Exception {
-		try {
+    public Logueo isLogged(UsuarioDto usuariolog) throws Exception {
 
-			return repositorio.findByemail(email);
+        try {
 
-		} catch (Exception e) {
+            String username = usuariolog.getUsername();
+            String pass = usuariolog.getPass();
+            List<Usuarios> users = repositorio.findByusername(username);
 
-			throw new Exception(e.getMessage());
-		}
-	}
+            for (Usuarios usuario : users) {
+                if (usuario.getUsername().equals(username) && usuario.getPass().equals(pass)) {
+                    return new Logueo(usuario.getId());
+                }
 
-	public Logueo isLogged(UsuarioDto usuariolog) throws Exception {
+            }
 
-		try {
+            return new Logueo(0L);
 
-			String username = usuariolog.getUsername();
-			String pass = usuariolog.getPass();
-			List<Usuarios> users = repositorio.findByusername(username);
+        } catch (Exception e) {
 
-			for (Usuarios usuario : users) {
-				if (usuario.getUsername().equals(username) && usuario.getPass().equals(pass)) {
-					return new Logueo(usuario.getId());
-				}
+            throw new Exception(e.getMessage());
+        }
 
-			}
-
-			return new Logueo(0L);
-
-		} catch (Exception e) {
-
-			throw new Exception(e.getMessage());
-		}
-
-	}
+    }
 
 }

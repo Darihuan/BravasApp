@@ -1,4 +1,4 @@
-package web.practicas.demo.repository;
+package web.practicas.demo.repository.base;
 
 import java.io.Serializable;
 

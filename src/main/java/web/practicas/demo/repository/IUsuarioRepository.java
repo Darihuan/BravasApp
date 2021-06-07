@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import web.practicas.demo.model.Usuarios;
+import web.practicas.demo.model.entidades.Usuarios;
+import web.practicas.demo.repository.base.BaseRepository;
+
 @Repository
-public interface UsuarioRepository  extends BaseRepository<Usuarios, Long>{
+public interface IUsuarioRepository extends BaseRepository<Usuarios, Long> {
 	List<Usuarios>findByemail(String email)throws Exception;
 	List<Usuarios>findByusername(String username)throws Exception;
 	
