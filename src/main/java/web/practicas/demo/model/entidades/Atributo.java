@@ -23,8 +23,7 @@ public class Atributo implements Serializable {
     private String tipoDato;
     @Column(name = "descripcion")
     private String descripcion;
-    @OneToMany(mappedBy = "atributo")
-    private List<Atributo_Proyecto>proyectos;
+
 
 
 }

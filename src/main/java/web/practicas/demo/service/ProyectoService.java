@@ -58,15 +58,16 @@ public class ProyectoService extends BaseServiceImplementation<Proyecto, Long> {
             }
 
             Proyecto proyecto=repositorio.getById(valor.getIdProyecto());
-            nuevo.setProyecto(proyecto);
-            nuevo.setAtributo(repositorioatributo.getById(valor.getNombre()));
+
+            nuevo.getMykey().setProyecto(proyecto);
+            nuevo.getMykey().setAtributo(repositorioatributo.getById(valor.getNombre()));
             System.out.println("funciona");
 
-            List<Atributo_Proyecto>relaciones=proyecto.getRelaciones();
-            relaciones.add(nuevo);
+
+
             System.out.println("relaciones creadas");
 
-            proyecto.setRelaciones(relaciones);
+
             System.out.println("relaciones añadids");
             System.out.println(proyecto.toString());
 

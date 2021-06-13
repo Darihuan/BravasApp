@@ -15,7 +15,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @Embeddable
-@IdClass()
+
 public class Atributo_Proyecto implements Serializable {
     @Column(name = "value_numero")
     Integer valuenumero;
@@ -23,22 +23,20 @@ public class Atributo_Proyecto implements Serializable {
     String valueString;
     @Column(name = "value_fecha")
     Date valueFecha;
-    @Id
-    @ManyToOne
-@JoinColumn(name = "nombre_atributo")
-    private Atributo atributo;
-    @Id
-    @ManyToOne
-@JoinColumn(name = "id_proyecto")
-    private Proyecto proyecto;
 
-    public Atributo_Proyecto(Proyecto proyecto,Atributo atributo,Integer valuenumero, String valueString, Date valueFecha) {
+    @EmbeddedId
+    private Key mykey;
+
+
+    public Atributo_Proyecto(Key key,Integer valuenumero, String valueString, Date valueFecha) {
         this.valuenumero = valuenumero;
         this.valueString = valueString;
         this.valueFecha = valueFecha;
-        this.atributo = atributo;
-        this.proyecto = proyecto;
+        this.mykey=key;
+
     }
 
 
+
 }
+

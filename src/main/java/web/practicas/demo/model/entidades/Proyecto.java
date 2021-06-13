@@ -25,15 +25,14 @@ public class Proyecto extends Base implements Serializable {
     private String nombre;
     @Column(name = "equipo")
     private String equipo;
-    @OneToMany(mappedBy ="proyecto")
-    private List<Atributo_Proyecto> relaciones;
+
 
 
     public Proyecto(Long Id, String nombre, String equipo, List<Atributo_Proyecto> relaciones) {
         super(Id);
         this.nombre = nombre;
         this.equipo = equipo;
-        this.relaciones = relaciones;
+
     }
 
 
