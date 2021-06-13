@@ -6,7 +6,9 @@ import web.practicas.demo.model.dto.ProyectoAtributoDTO;
 import web.practicas.demo.model.dto.ProyectoDTO;
 import web.practicas.demo.model.entidades.Atributo;
 import web.practicas.demo.model.entidades.Atributo_Proyecto;
+import web.practicas.demo.model.entidades.Key;
 import web.practicas.demo.model.entidades.Proyecto;
+import web.practicas.demo.repository.IAtributoProyectoRepository;
 import web.practicas.demo.repository.IAtributoRepository;
 import web.practicas.demo.repository.IProyectoRepository;
 import web.practicas.demo.repository.base.BaseRepository;
@@ -24,6 +26,8 @@ public class ProyectoService extends BaseServiceImplementation<Proyecto, Long> {
     IProyectoRepository repositorio;
     @Autowired
     IAtributoRepository repositorioatributo;
+    @Autowired
+    IAtributoProyectoRepository repositorioRelaciones;
 
     public ProyectoService(BaseRepository<Proyecto, Long> repository, IProyectoRepository repositorio) {
         super(repository);
@@ -40,37 +44,41 @@ public class ProyectoService extends BaseServiceImplementation<Proyecto, Long> {
             switch (tipodato){
                 case "string":
                     nuevo.setValueString(valor.getValor());
-                    System.out.println("setea datos");
+                    System.out.println("setea datos str");
                     break;
                 case "integer":
                     nuevo.setValuenumero(Integer.parseInt(valor.getValor()));
-                    System.out.println("setea datos");
+                    System.out.println("setea datos int");
                     break;
                 case "boolean":
                     nuevo.setValuenumero(Integer.parseInt(valor.getValor()));
-                    System.out.println("setea datos");
+                    System.out.println("setea datos boo");
                     break;
                 case "date":
                     nuevo.setValueFecha(new Date(valor.getValor()));
-                    System.out.println("setea datos");
+                    System.out.println("setea datos date");
                     break;
 
             }
 
             Proyecto proyecto=repositorio.getById(valor.getIdProyecto());
+            System.out.println("obtenemos proyecto");
+            Key clave=new Key();
+            clave.setProyecto(proyecto);
+            clave.setAtributo(repositorioatributo.getById(valor.getNombre()));
 
-            nuevo.getMykey().setProyecto(proyecto);
-            nuevo.getMykey().setAtributo(repositorioatributo.getById(valor.getNombre()));
-            System.out.println("funciona");
-
-
-
-            System.out.println("relaciones creadas");
+            System.out.println("clave creada");
 
 
-            System.out.println("relaciones añadids");
-            System.out.println(proyecto.toString());
 
+           nuevo.setMykey(clave);
+
+
+
+            System.out.println("relacion añadida");
+
+
+            repositorioRelaciones.save(nuevo);
 
 
             System.out.println("proyecto persistido");
@@ -79,14 +87,7 @@ public class ProyectoService extends BaseServiceImplementation<Proyecto, Long> {
 
 
 
-
-
-
             return export;
-
-
-
-
 
         }catch(Exception e){
             throw new Exception(e.getMessage());
